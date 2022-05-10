@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace VirusSimulation
 {
-    
+
 
     class Program
     {
-       
+
 
         static void Main(string[] args)
         {
-            
+
             string DName = "";
             int DInfectionRate = 0;
             int DIllDays = 0;
@@ -61,7 +61,7 @@ namespace VirusSimulation
 
             Console.Clear();
             Console.ReadLine();
-            
+
         }
 
 
@@ -130,9 +130,9 @@ namespace VirusSimulation
         }
     }
 
-        //------------------------------------------------------------------------
+    //------------------------------------------------------------------------
 
-        //------------------------------------------------------------------------
+    //------------------------------------------------------------------------
 
     public class virus
     {
@@ -141,11 +141,12 @@ namespace VirusSimulation
         public int infectivity;
 
 
-        public virus(string _name, int _days, int _infectivity){
+        public virus(string _name, int _days, int _infectivity)
+        {
             Name = _name;
             days = _days;
             infectivity = _infectivity;
         }
     }
-   
+
 }

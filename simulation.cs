@@ -1,5 +1,7 @@
-namespace VirusSimulation{
-    class Simulation{
+﻿namespace VirusSimulation
+{
+    class Simulation
+    {
         private int _daysIn;
         private Population _simPop;
         private virus _Virus;
@@ -13,19 +15,22 @@ namespace VirusSimulation{
         public int Infected { get => _infected; set => _infected = value; }
         public int Recoverd { get => _recoverd; set => _recoverd = value; }
         internal Population SimPop { get => _simPop; set => _simPop = value; }
-   
-        public Simulation(virus Virus, Population p, int startInfections){
+
+        public Simulation(virus Virus, Population p, int startInfections)
+        {
             _Virus = Virus;
             _daysIn = 0;
             _infected = startInfections;
             _simPop = p;
 
-            for(int i = 0; i < startInfections; i++){
+            for (int i = 0; i < startInfections; i++)
+            {
                 _simPop.People[i].Condition = state.infected;
             }
         }
 
-        public void SimInfection(){
+        public void SimInfection()
+        {
             foreach (person infector in _simPop.People)
             {
                 foreach (person infectee in _simPop.People)
@@ -35,49 +40,63 @@ namespace VirusSimulation{
             }
         }
 
-        public void AddUpNumbers(){
+        public void AddUpNumbers()
+        {
             totalInfected = 0;
             _infected = 0;
             _recoverd = 0;
             foreach (person p in _simPop.People)
             {
-                if(p.BeenInfected) totalInfected++;
-                if(p.Condition == state.infected) _infected++;
-                if(p.Condition == state.recovered) _recoverd++;
+                if (p.BeenInfected) totalInfected++;
+                if (p.Condition == state.infected) _infected++;
+                if (p.Condition == state.recovered) _recoverd++;
             }
         }
-        public void Summary(){
+        public void Summary()
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine($"{_Virus.Name} is over");
-            double popInfected = Math.Round(((double)totalInfected / (double)_simPop.Size) * 100,2);
+            double popInfected = Math.Round(((double)totalInfected / (double)_simPop.Size) * 100, 2);
             Console.WriteLine($"Duration: {_daysIn}\nTotal infected = {totalInfected} ({popInfected}%)");
 
-            Console.WriteLine("Daily infected amount of people");
-            foreach (int infectedNum in _dailyInfected)
+            Console.WriteLine("\n\nDaily infected amount of people");
+            for(int day = 1; day <= _dailyInfected.Count; day++)
             {
-                Console.Write(infectedNum + ", ");
+                Console.Write($"DAY: {day}, {_dailyInfected[day - 1]} people infected \t\t");
+                for (int i = 0; i < _dailyInfected[day - 1]; i++)
+                {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.Write(" ");
+                }
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine();
             }
 
             Console.ReadLine();
         }
 
-        public void Run(){
-            while(_infected > 0){
+        public void Run()
+        {
+            while (_infected > 0)
+            {
                 Console.Clear();
                 _daysIn += 1;
                 _simPop.updatePopulation(_Virus);
                 SimInfection();
                 AddUpNumbers();
                 Console.ForegroundColor = ConsoleColor.Black;
-                Console.SetCursorPosition(0,0);
-                Console.Write($"Pop: {_simPop.Size} | DayNum: {_daysIn} Infected: {_infected} REcoverd: {_recoverd}, Disease: {_Virus.Name}");
+                Console.SetCursorPosition(0, 0);
+                Console.Write($"Population: {_simPop.Size} | DayNum: {_daysIn} Infected: {_infected} Recoverd: {_recoverd}, Disease: {_Virus.Name}");
                 _dailyInfected.Add(_infected);
                 System.Threading.Thread.Sleep(500);
 
-                if(Console.KeyAvailable){
+                if (Console.KeyAvailable)
+                {
                     ConsoleKeyInfo k = Console.ReadKey(false);
-                    if(k.Key == ConsoleKey.Escape){
+                    if (k.Key == ConsoleKey.Escape)
+                    {
                         break;
                     }
                 }
